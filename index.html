@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <title>聚划算</title>
+        <link href="css/swiper.min.css" rel="stylesheet" />
+        <style>
+            *{ margin: 0; padding: 0; }
+            li{ list-style: none; }
+            a{ text-decoration: none; }
+            img{ vertical-align: top; }
+            .fl{ float: left; }
+            .fr{ float: right; }
+            .clearFix:after{ content:''; display: block; clear: both; }
+            /*
+              rem (root element of font size ) 相对根元素(html元素)的字体大小来做适配
+              rem 注：
+                   1、谷歌浏览器默认字体大小为16px
+                   2、字体大小多少合适: 20 50 100 32
+                   3、页面基准320
+                   4、优点:可兼容各个版本分辨率
+                   5、缺点:会出现小数
+                   6、640的图(高清图)
+                      公式 —— 图的高度/宽度 ÷ font-size ÷ 2
+            */
+            html{ font-size: 20px;}
+            /*
+                背景渐变 :
+                background: -webkit-linear-gradient(颜色1,颜色2); 上 ——下渐变
+                background: -webkit-linear-gradient(left/right,颜色1，颜色2); 左/右 —— 右/左 渐变
+             */
+            header{ background: -webkit-linear-gradient(#fff,#ededed); position: relative;}
+            header .back{ background: url(images/back.png) no-repeat; width: 3.1rem; height: 1.45rem; position: absolute; left: 0.55rem; top: 0.55rem; background-size: contain;}
+            header .logo{ height: 2.5rem; background: url(images/logo.png) no-repeat center; background-size: 3.75rem 1rem;}
+
+            /*.banner{ width: 16rem; height: 6.675rem;}
+            .banner img{ width: 100%; height: 100%;}*/
+
+            .swiper-container{ width:16rem; height:6.675rem; margin-bottom: 0.5rem; }
+            .swiper-slide{ width:16rem; height:6.675rem; text-align:center; line-height:6.675rem; background: url(images/banner.jpg); background-size: 16rem 6.675rem;}
+
+            /*.btn{ text-align: center; margin-top: 0.5rem;}
+            .btn span{ width: 0.4rem; height: 0.4rem; margin: 0 0.125rem; background: #ccc; display: inline-block; border-radius: 50%; vertical-align: top;}
+            .btn .on{ background: rgb(245,82,2);}*/
+
+            nav li{ width: 25%; float: left; text-align: center;}
+            nav a{ font-size: 0.5rem; color: #999; background: url(images/nav.png) no-repeat top; display: block; background-size: 2rem 2rem; width: 100%; height: 100%; padding-top: 2.475rem; margin-bottom: 1rem;}
+
+            .title{ width: 15rem; height: 1.9rem; margin: 0 0.5rem; border-bottom: 0.1rem solid #dcdcdc; line-height: 1.9rem; }
+            .l{ float: left; width: 0.1rem; height: 0.75rem; background: #d51938; margin: 0.6rem 0.45rem 0.5rem 0.15rem;}
+            .c{ font-size: 0.65rem; color: #333; font-weight: bold; float: left; }
+            .r{ font-size: 0.5rem; color: #333; font-weight: bold; float: right; }
+
+            .shoplist{ margin-top: 0.75rem; height: 35rem;}
+            .shoplist .nop{ padding-top: 0;}
+            .shoplist li{ width: 15rem; height: 3rem; margin: 0 0.5rem; padding-top: 0.5rem;}
+            .shoplist li .box{ float: left; height: 100%; width: 1.5rem; background: -webkit-linear-gradient(#ffb400,#ff9d00); font-size: 0.85rem; line-height: 3rem; text-align: center; color: #fff; font-weight: bold;}
+            .shoplist li img{ float: left; height: 100%; width: 4.5rem;}
+            .shoplist li div{ float: left; height: 100%; width: 9rem; background: #f4f4f4;}
+            .shoplist .textleft{ width: 3.6rem; height: 1.5rem; margin: 0.735rem 0 0 0.55rem; float: left;}
+            .shoplist .textleft .text{ font-size: 0.55rem; color: #999; vertical-align: top; font-weight: bold;}
+            .shoplist .textleft p{ font-size: 0.5rem; color: #999; font-weight: bold;}
+            .shoplist .textleft p i{font-style: normal; text-decoration: line-through; padding-left: 0.7rem;}
+            .shoplist strong{float: left; line-height: 3rem; font-size: 0.6rem; color: #d51938; margin-left: 2.2rem;}
+            .shoplist .right{float: left; background: url(images/icon2.png) no-repeat; width: 0.325rem; height: 0.55rem; background-size:contain; margin: 1.2rem 0 0 0.5rem;}
+
+            .adv{ width: 15rem; margin: 0 0.5rem; background: #f5f5f5; height: 2rem;}
+            .adv p{ font-size: 0.65rem; color: #666; line-height: 2rem; float: left; margin: 0 0 0 4.775rem;}
+            .adv span{ background: url(images/icon2.png) no-repeat; float: right; width: 0.325rem; height: 0.525rem; margin: 0.825rem 0.5rem 0 0; background-size: contain;}
+
+            .typelist{ width: 15rem; height: 8.8rem; margin: 0.5rem 0.5rem 0.5rem 0.5rem;}
+            .typelist img{ height: 8.8rem; width: 3.75rem; float: left;}
+            .typer{ width: 11.1rem; height: 8.75rem; border: 0.025rem solid #ccc; float: left;}
+            .typer ul{ width: 100%; height: 100%;}
+            .typer ul li{ width: 3.725rem; height: 2.15rem; border-right: 0.025rem solid #ccc; border-bottom: 0.025rem solid #ccc; line-height: 2.15rem; text-align: center; float: left; margin-left: -0.025rem; }
+            .typer ul li a{ font-size: 0.65rem; color: #d51942; font-weight: bold;}
+            .typer ul .nor{ border-right: none; width: 3.6rem; }
+            .typer ul .nor a{ color: #999;}
+            .typer ul .nob{ border-bottom: none;}
+            .web{ width: 14.95rem; height: 3.95rem; border: 0.025rem solid #ccc; margin: 0.8rem 0.5rem 0.7rem 0.5rem; display: flex;}
+            .webl{ flex: 1; border-right: 0.025rem solid #ccc; text-align: center; line-height: 6rem; float: left;}
+            .webl a{ background: url(images/app.png) no-repeat top; padding-top: 1.8rem; background-size: 0.95rem 1.1rem; font-size: 0.575rem; color: #999; font-weight: bold;}
+            .web .nori{ border-right: none;}
+
+            .login{ width: 16rem; height: 2.2rem; background: #f8f8f8; }
+            .loginl{ width: 8rem; float: left; line-height: 2.2rem; }
+            .loginl span{ font-size: 0.65rem; margin-left: 0.75rem; font-weight: bold; color: #333; }
+            .loginl i{ font-size: 0.65rem; font-weight: bold; color: #333; font-style: normal; margin-left: 1.2rem; }
+            .loginr{ width: 8rem; float: right; line-height: 2.2rem; position: relative;}
+            .loginr span{ margin-left: 4.875rem; font-size: 0.55rem; color: #333; font-weight: bold;}
+            .loginr a{ background: url(images/top.png) no-repeat; width: 0.425rem; height: 0.225rem; background-size: contain; display: block; position: absolute; right: 0.7rem; top: 1rem; }
+
+            footer{ width: 100%; height: 8.5rem; background: #eee;}
+            footer .debug{ width: 100%; overflow:hidden; }
+            footer .lastdiv{ width: 4.75rem; height: 2.525rem; margin: 0 auto; line-height: 2.525rem;}
+            footer span{ font-size: 0.65rem; color: #3e3e3e; font-weight: bold; float: left;}
+            footer i{ font-size: 0.65rem; color: #3e3e3e; font-style: normal; font-weight: bold; float: right;}
+            footer p{ font-size: 0.5rem; color: #999; text-align: center;}
+
+        </style>
+        <script src="js/swiper.min.js"></script>
+        <script>
+            /**
+             * [fontSize description]
+             * @type {[type]}
+             * rem 需要在 javascript里面设置一下:
+             * 根据不同的设备宽度在根元素上设置不同的字体大小。
+             * ;结束前面的语句
+             */
+            window.onload = function(){
+                ;(function(win,doc){
+                    function change(){
+                        doc.documentElement.style.fontSize = 20*doc.documentElement.clientWidth/320+'px';
+                    }
+                    change();
+                    win.addEventListener('resize',change,false);
+                })(window,document)
+
+                new Swiper('.swiper-container',{
+            		spaceBetween:10,		//每个slider之间的间距
+            		prevButton:'.swiper-button-prev',	//上一张
+            		nextButton:'.swiper-button-next',	//下一张
+            		pagination:'.swiper-pagination', 	//生成小圆点
+            		paginationClickable:true,			//小圆点可以点击
+            		loop:true,							//无缝
+            		autoplay:1000,						//自动播放
+            		autoplayDisableOnInteraction:false	//用户操作完，自动播放
+            	});
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            <div class="back"></div>
+            <div class="logo"></div>
+        </header>
+        <div class="swiper-container">
+        	<div class="swiper-wrapper">
+            	<div class="swiper-slide">Slide 1</div>
+            	<div class="swiper-slide">Slide 2</div>
+            	<div class="swiper-slide">Slide 3</div>
+            	<div class="swiper-slide">Slide 4</div>
+            	<div class="swiper-slide">Slide 5</div>
+            </div>
+
+            <div class="swiper-pagination"></div>
+
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+        </div>
+        <!-- <div class="btn"><span class="on"></span><span></span><span></span><span></span><span></span>
+        </div> -->
+        <nav>
+            <ul class="clearFix">
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+                <li>
+                    <a href="javascript:;">聚宝盆</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="title clearFix">
+            <span class="l"></span>
+            <span class="c">聚划算热卖排行</span>
+            <span class="r">TOP10</span>
+        </div>
+        <nav>
+            <ul class="shoplist">
+                <li class="clearFix nop">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+                <li class="clearFix">
+                    <span class="box">1</span>
+                    <img src="images/title.jpg" alt="">
+                    <div>
+                        <div class="textleft clearFix">
+                            <span class="text">已售 68423</span>
+                            <p>2.3折<i>&yen;299</i></p>
+                        </div>
+                        <strong>&yen;51</strong>
+                        <span class="right"></span>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <div class="adv">
+            <p>更多划算 逛起来!</p>
+            <span></span>
+        </div>
+        <div class="typelist clearFix">
+            <img src="images/type.jpg" alt="">
+            <div class="typer">
+                <ul class="clearFix">
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li class="nob"><a href="#">服装</a></li>
+                    <li class="nob"><a href="#">配饰</a></li>
+                    <li class="nor nob"><a href="#">美妆</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="adv">
+            <p>精彩商品 逛起来!</p>
+            <span></span>
+        </div>
+        <div class="typelist clearFix">
+            <img src="images/type.jpg" alt="">
+            <div class="typer">
+                <ul class="clearFix">
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li class="nob"><a href="#">服装</a></li>
+                    <li class="nob"><a href="#"></a></li>
+                    <li class="nor nob"><a href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="adv">
+            <p>品质生活 逛起来!</p>
+            <span></span>
+        </div>
+        <div class="typelist clearFix">
+            <img src="images/type.jpg" alt="">
+            <div class="typer">
+                <ul class="clearFix">
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li><a href="#">服装</a></li>
+                    <li><a href="#">配饰</a></li>
+                    <li class="nor"><a href="#">美妆</a></li>
+                    <li class="nob"><a href="#">服装</a></li>
+                    <li class="nob"><a href="#"></a></li>
+                    <li class="nor nob"><a href="#"></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="adv">
+            <p>品牌折扣 逛起来!</p>
+            <span></span>
+        </div>
+        <div class="web">
+            <div class="webl">
+                <a href="#">ios客户端</a>
+            </div>
+            <div class="webl">
+                <a href="#">ios客户端</a>
+            </div>
+            <div class="webl nori">
+                <a href="#">ios客户端</a>
+            </div>
+        </div>
+        <div class="login clearFix">
+            <div class="loginl">
+                <span>登录</span>
+                <i>注册</i>
+            </div>
+            <div class="loginr">
+                <span>TOP</span>
+                <a href="#"></a>
+            </div>
+        </div>
+
+        <footer>
+            <div class="debug">
+                <div class="lastdiv">
+                    <span>标准版</span>
+                    <i>电脑版</i>
+                </div>
+            </div>
+            <p>@2013&nbsp;浙B2-20080224&nbsp;服务中心</p>
+        </footer>
+    </body>
+</html>
